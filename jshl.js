@@ -1,10 +1,13 @@
 'use strict';
 
 const protoString = document.getElementById('code').innerHTML;
-const colorset = { github: { color1: '#ee82ee',
+const fontFamily = 'monospace';
+const colorset = { github: { color1: '#728bf5',
                              color2: '#a52a2a'
                            }
                  };
+
+const tags = { for: '&#x0066;&#x006f;&#x0072;', while: '&#x0077;&#x0068;&#x0069;&#x006c;&#x0065;'};
 
 
 function unicodeSf(string) {
@@ -23,6 +26,7 @@ function unicodeSf(string) {
 };
 
 
+
 if (protoString.includes('[code]') && protoString.includes('[/code]')) {
   const opnTag = protoString.indexOf('[code]') + 6, 
         clsTag = protoString.indexOf('[/code]', opnTag + 1);
@@ -33,9 +37,16 @@ if (protoString.includes('[code]') && protoString.includes('[/code]')) {
           postCodeString = protoString.substr(clsTag + 7, protoString.length);
     let codeString = protoString.substring(opnTag, clsTag);
     codeString = unicodeSf(codeString);
-    codeString = codeString.toString().replace(/,/g, '').replace(/&#x000a;/g, '<br>');
+    codeString = codeString.toString().replace(/,/g, '').replace(/&#x000a;/g, '<br>'); //new line
+    
+    codeString = codeString.replace(/&#x006c;&#x0065;&#x0074;/g, `<span style="color: ${colorset.github.color2}">let</span>`); //let
+    codeString = codeString.replace(/&#x0066;&#x0075;&#x006e;&#x0063;&#x0074;&#x0069;&#x006f;&#x006e;/g, `<span style="color: ${colorset.github.color1}">function</span>`); //function
+    
+    
+    codeString = codeString.replace(/&#x0020;/g, '&nbsp;'); //spaces
+    
 
-    document.getElementById('code').innerHTML = `${preCodeString} <br><span style="font-family:monospace;">${codeString}</span> <br>${postCodeString}`;
+    document.getElementById('code').innerHTML = `${preCodeString} <br><span style="font-family:${fontFamily};">${codeString}</span> <br>${postCodeString}`;
     
   } else {
     alert('/');
